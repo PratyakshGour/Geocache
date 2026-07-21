@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: geocache-postgres
+    environment:
+      POSTGRES_USER: geocache_user
+      POSTGRES_PASSWORD: geocache_password
+      POSTGRES_DB: geocache
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
