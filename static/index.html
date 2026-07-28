@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoCache — Distributed In-Memory Caching System</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <div class="title-area">
+            <h1>GeoCache 🌍⚡</h1>
+            <p>Geo-Distributed In-Memory Caching Architecture with Location-Based Routing & Replication</p>
+        </div>
+        <div class="cluster-status-badge">
+            <div class="pulse-dot"></div>
+            <span>CLUSTER HEALTHY</span>
+        </div>
+    </header>
+
+    <!-- Top Summary Metrics -->
+    <section class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-label">Total Cluster Items</div>
+            <div class="metric-value" id="metric-total-items">0</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Cluster Hit Ratio</div>
+            <div class="metric-value" id="metric-hit-ratio">0%</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Total Requests</div>
+            <div class="metric-value" id="metric-total-requests">0</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Active Regional Nodes</div>
+            <div class="metric-value" id="metric-active-nodes">5</div>
+        </div>
+    </section>
+
+    <!-- Regional Nodes Grid -->
+    <section>
+        <div class="section-title">
+            <span>🖥️ Simulated Regional Server Nodes</span>
+        </div>
+        <div class="regions-grid" id="regions-grid">
+            <!-- Dynamically injected cards from app.js -->
+        </div>
+    </section>
+
+    <!-- Simulator & Console -->
+    <section class="simulator-area">
+        <!-- Control Panel -->
+        <div class="glass-panel">
+            <div class="section-title" style="margin-bottom: 1.5rem;">
+                <span>📡 Geo-Routing & Cache Simulator</span>
+            </div>
+            <form id="simulator-form">
+                <div class="form-group">
+                    <label for="select-city">Select Simulated Client Location (City Preset)</label>
+                    <select id="select-city" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                    <label for="input-key">Cache Key</label>
+                    <input type="text" id="input-key" class="form-control" placeholder="e.g. user_session_101, config_eu">
+                </div>
+                <div class="form-group">
+                    <label for="input-val">Cache Value / Data</label>
+                    <input type="text" id="input-val" class="form-control" placeholder="e.g. { 'theme': 'dark', 'role': 'admin' }">
+                </div>
+                <div class="form-group">
+                    <label for="input-ttl">TTL (Time To Live in seconds)</label>
+                    <input type="number" id="input-ttl" class="form-control" value="3600">
+                </div>
+                <div class="btn-group">
+                    <button type="button" id="btn-set" class="btn btn-primary">⚡ Store / Set Key</button>
+                    <button type="button" id="btn-get" class="btn btn-secondary">🔍 Fetch / Get Key</button>
+                    <button type="button" id="btn-delete" class="btn btn-secondary">🗑️ Delete Key</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Live Activity Console -->
+        <div class="glass-panel" style="display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem;">
+                <div class="section-title" style="margin-bottom: 0;">
+                    <span>⚡ Real-Time Distributed Telemetry Log</span>
+                </div>
+                <button type="button" id="btn-clear-all" class="btn btn-danger" style="font-size: 0.8rem; padding: 0.4rem 0.8rem;">🧹 Reset Cluster</button>
+            </div>
+            <div class="console-box" id="console-log">
+                <div class="log-entry info">
+                    <span class="log-time">[System]</span> Welcome to the GeoCache Interactive Dashboard! Select a global city and perform read/write operations to observe low-latency geo-routing and multi-region replication.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
