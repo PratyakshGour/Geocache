@@ -1,15 +1,11 @@
 services:
-  postgres:
-    image: postgres:17
-    container_name: geocache-postgres
-    environment:
-      POSTGRES_USER: geocache_user
-      POSTGRES_PASSWORD: geocache_password
-      POSTGRES_DB: geocache
+  geocache:
+    build: .
+    container_name: geocache-server
     ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-volumes:
-  postgres_data:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      - DEFAULT_TTL=3600
+      - MAX_CACHE_SIZE=1000
+    restart: always
