@@ -6,11 +6,7 @@ from app.core.config import settings
 
 
 class CacheEngine:
-    """
-    Thread-safe In-Memory Caching Engine with TTL expiration,
-    LRU (Least Recently Used) and LFU (Least Frequently Used) eviction policies,
-    and real-time telemetry metrics.
-    """
+    # Thread-safe in-memory cache store with TTL and LRU/LFU eviction support.
     def __init__(
         self,
         region_id: str,
@@ -25,7 +21,7 @@ class CacheEngine:
         self.store: Dict[str, CacheItem] = {}
         self.lock = threading.Lock()
 
-        # Telemetry metrics
+        # Cache stats
         self.hits = 0
         self.misses = 0
         self.evictions = 0

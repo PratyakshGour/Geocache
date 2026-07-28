@@ -5,32 +5,25 @@ from app.schemas.data import ClusterStatusResponse, RegionStats
 
 
 class ClusterRepository:
-    """
-    Multi-region cluster manager maintaining in-memory cache engine instances
-    for all simulated geographical servers.
-    """
+    # Manages all regional in-memory cache nodes for the cluster
     def __init__(self):
         self.nodes: Dict[str, CacheEngine] = {}
         for region_id in settings.REGIONS.keys():
             self.nodes[region_id] = CacheEngine(region_id=region_id)
 
     def get_node(self, region_id: str) -> Optional[CacheEngine]:
-        """Get the CacheEngine instance for a specific region."""
         return self.nodes.get(region_id)
 
     def get_all_nodes(self) -> Dict[str, CacheEngine]:
         return self.nodes
 
-    def clear_cluster():
-        pass
-
     def clear_all(self):
-        """Clear all regional caches and reset telemetry metrics."""
+        # Clear all cache nodes and reset metrics
         for node in self.nodes.values():
             node.clear()
 
     def get_cluster_status(self) -> ClusterStatusResponse:
-        """Aggregate statistics across all regional servers in the cluster."""
+        # Collect stats across all regions in the cluster
         region_stats_list: List[RegionStats] = []
         total_items = 0
         total_hits = 0
