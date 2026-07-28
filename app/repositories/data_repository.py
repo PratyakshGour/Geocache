@@ -1,41 +1,61 @@
-class DataRepository:
+from typing import Dict, Optional, List
+from app.core.cache_engine import CacheEngine
+from app.core.config import settings
+from app.schemas.data import ClusterStatusResponse, RegionStats
 
+
+class ClusterRepository:
+    """
+    Multi-region cluster manager maintaining in-memory cache engine instances
+    for all simulated geographical servers.
+    """
     def __init__(self):
+        self.nodes: Dict[str, CacheEngine] = {}
+        for region_id in settings.REGIONS.keys():
+            self.nodes[region_id] = CacheEngine(region_id=region_id)
 
-        self.data_store = {
-            1: {
-                "title": "India Data",
-                "content": "This data belongs to the India region"
-            },
-            2: {
-                "title": "Singapore Data",
-                "content": "This data belongs to the Singapore region"
-            },
-            3: {
-                "title": "Europe Data",
-                "content": "This data belongs to the Europe region"
-            }
-        }
+    def get_node(self, region_id: str) -> Optional[CacheEngine]:
+        """Get the CacheEngine instance for a specific region."""
+        return self.nodes.get(region_id)
 
-        self.next_id = 4
+    def get_all_nodes(self) -> Dict[str, CacheEngine]:
+        return self.nodes
 
-    def get_by_id(self, data_id: int):
+    def clear_cluster():
+        pass
 
-        return self.data_store.get(data_id)
-    
+    def clear_all(self):
+        """Clear all regional caches and reset telemetry metrics."""
+        for node in self.nodes.values():
+            node.clear()
 
-    def create(self, title: str, content: str):
-        
-        data_id = self.next_id
+    def get_cluster_status(self) -> ClusterStatusResponse:
+        """Aggregate statistics across all regional servers in the cluster."""
+        region_stats_list: List[RegionStats] = []
+        total_items = 0
+        total_hits = 0
+        total_misses = 0
 
-        self.data_store[data_id] = {
-        "title": title,
-        "content": content
-    }
+        for region_id, node in self.nodes.items():
+            stats = node.get_stats()
+            region_stats_list.append(stats)
+            total_items += stats.total_items
+            total_hits += stats.hits
+            total_misses += stats.misses
 
-        self.next_id += 1
+        total_requests = total_hits + total_misses
+        cluster_hit_ratio = round((total_hits / total_requests) * 100, 2) if total_requests > 0 else 0.0
 
-        return {
-        "data_id": data_id,
-        "data": self.data_store[data_id]
-    }
+        return ClusterStatusResponse(
+            project=settings.PROJECT_NAME,
+            version=settings.VERSION,
+            status="running",
+            total_cluster_items=total_items,
+            total_cluster_hits=total_hits,
+            total_cluster_misses=total_misses,
+            cluster_hit_ratio=cluster_hit_ratio,
+            regions=region_stats_list
+        )
+
+
+cluster_repository = ClusterRepository()
